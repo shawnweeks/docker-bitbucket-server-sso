@@ -1,0 +1,1 @@
+docker build -t bitbucket-server-sso --build-arg BITBUCKET_VERSION=7.2.3 .
