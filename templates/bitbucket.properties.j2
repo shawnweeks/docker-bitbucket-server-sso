@@ -1,0 +1,10 @@
+plugin.auth-crowd.sso.enabled={{ CROWD_SSO_ENABLED | default('false') }}
+server.secure={{ ATL_TOMCAT_SECURE | default('false') }}
+server.scheme={{ ATL_TOMCAT_SCHEME | default('http') }}
+server.proxy-port={{ ATL_PROXY_PORT | default('') }}
+server.proxy-name={{ ATL_PROXY_NAME | default('') }}
+server.context-path={{ ATL_TOMCAT_CONTEXTPATH | default('') }}
+jdbc.driver={{ JDBC_DRIVER | default('org.h2.Driver') }}
+jdbc.url={{ JDBC_URL | default('jdbc:h2:${bitbucket.shared.home}/data/db;MVCC=TRUE;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE;TRACE_LEVEL_FILE=4') }}
+jdbc.user={{ JDBC_USERNAME | default('sa') }}
+jdbc.password={{ JDBC_PASSWORD | default('') }}

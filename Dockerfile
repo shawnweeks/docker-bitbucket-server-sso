@@ -1,60 +1,52 @@
-ARG BASE_IMAGE=adoptopenjdk:8-hotspot
-FROM $BASE_IMAGE
+# Atlassian Docker UIDs
+# These are based on the UIDs found in the Official Images
+# to maintain compatability as much as possible.
+# Jira          2001
+# Confluence    2002
+# Bitbucket     2003
+# Crowd         2004
+# Bamboo        2005
+
+ARG BASE_REGISTRY=registry.cloudbrocktec.com
+ARG BASE_IMAGE=redhat/ubi/ubi8
+ARG BASE_TAG=8.2
+
+FROM ${BASE_REGISTRY}/${BASE_IMAGE}:${BASE_TAG}
+
+ENV BITBUCKET_USER bitbucket
+ENV BITBUCKET_GROUP bitbucket
+ENV BITBUCKET_UID 2003
+ENV BITBUCKET_GID 2003
+
+ENV BITBUCKET_HOME /var/atlassian/application-data/bitbucket
+ENV BITBUCKET_INSTALL_DIR /opt/atlassian/bitbucket
 
 ARG BITBUCKET_VERSION
+ARG DOWNLOAD_URL=https://product-downloads.atlassian.com/software/stash/downloads/atlassian-bitbucket-${BITBUCKET_VERSION}.tar.gz
 
-ENV SSO_ENABLED false
-ENV RUN_USER                                        bitbucket
-ENV RUN_GROUP                                       bitbucket
-ENV RUN_UID                                         2003
-ENV RUN_GID                                         2003
+RUN yum install -y java-11-openjdk-devel procps git python3 python3-jinja2 && \
+    yum clean all
 
-# https://confluence.atlassian.com/display/BitbucketServer/Bitbucket+Server+home+directory
-ENV BITBUCKET_HOME                                  /var/atlassian/application-data/bitbucket
-ENV BITBUCKET_INSTALL_DIR                           /opt/atlassian/bitbucket
-ENV ELASTICSEARCH_ENABLED                           true
-ENV APPLICATION_MODE                                default
+COPY [ "entrypoint.sh", "entrypoint.py", "entrypoint_helpers.py", "/tmp/scripts/" ]
 
-WORKDIR $BITBUCKET_HOME
+COPY [ "templates/*.j2", "/opt/jinja-templates/" ]
 
-# Expose HTTP and SSH ports
+RUN mkdir -p ${BITBUCKET_HOME}/shared && \
+    mkdir -p ${BITBUCKET_INSTALL_DIR} && \
+    groupadd -r -g ${BITBUCKET_GID} ${BITBUCKET_GROUP} && \
+    useradd -r -u ${BITBUCKET_UID} -g ${BITBUCKET_GROUP} -M -d ${BITBUCKET_HOME} ${BITBUCKET_USER} && \
+    curl --silent -L ${DOWNLOAD_URL} | tar -xz --strip-components=1 -C "$BITBUCKET_INSTALL_DIR" && \
+    chown -R "${BITBUCKET_USER}:${BITBUCKET_GROUP}" "${BITBUCKET_INSTALL_DIR}" && \
+    cp /tmp/scripts/* ${BITBUCKET_INSTALL_DIR}/bin && \
+    chown -R "${BITBUCKET_USER}:${BITBUCKET_GROUP}" "${BITBUCKET_HOME}" && \
+    chmod 755 ${BITBUCKET_INSTALL_DIR}/bin/entrypoint.*
+
 EXPOSE 7990
 EXPOSE 7999
 
-CMD ["/entrypoint.py"]
-ENTRYPOINT ["/sbin/tini", "--"]
-
-RUN apt-get update && apt-get upgrade -y \
-    && apt-get install -y --no-install-recommends fontconfig openssh-client perl python3 python3-jinja2 \
-    && apt-get clean autoclean && apt-get autoremove -y && rm -rf /var/lib/apt/lists/*
-
-COPY bin/make-git.sh                                /
-RUN /make-git.sh
-
-ARG TINI_VERSION=v0.18.0
-ADD https://github.com/krallin/tini/releases/download/${TINI_VERSION}/tini /sbin/tini
-RUN chmod +x /sbin/tini
-
-ARG DOWNLOAD_URL=https://product-downloads.atlassian.com/software/stash/downloads/atlassian-bitbucket-${BITBUCKET_VERSION}.tar.gz
-
-RUN groupadd --gid ${RUN_GID} ${RUN_GROUP} \
-    && useradd --uid ${RUN_UID} --gid ${RUN_GID} --home-dir ${BITBUCKET_HOME} --shell /bin/bash ${RUN_USER} \
-    && echo PATH=$PATH > /etc/environment \
-    \
-    && mkdir -p                                     ${BITBUCKET_INSTALL_DIR} \
-    && curl -L --silent                             ${DOWNLOAD_URL} | tar -xz --strip-components=1 -C "${BITBUCKET_INSTALL_DIR}" \
-    && chmod -R "u=rwX,g=rX,o=rX"                   ${BITBUCKET_INSTALL_DIR}/ \
-    && chown -R root.                               ${BITBUCKET_INSTALL_DIR}/ \
-    && chown -R ${RUN_USER}:${RUN_GROUP}            ${BITBUCKET_INSTALL_DIR}/elasticsearch/logs \
-    && chown -R ${RUN_USER}:${RUN_GROUP}            ${BITBUCKET_HOME} \
-    \
-    && sed -i -e 's/^# umask/umask/'         ${BITBUCKET_INSTALL_DIR}/bin/_start-webapp.sh
-
-VOLUME ["${BITBUCKET_HOME}"]
-
-COPY bitbucket_sso_disabled.properties /opt/atlassian/sso/bitbucket_sso_disabled.properties
-COPY bitbucket.properties /opt/atlassian/sso/bitbucket.properties
-COPY login.soy.j2 /opt/atlassian/etc/login.soy.j2
-COPY entrypoint.py \
-    shared-components/image/entrypoint_helpers.py  /
-COPY shared-components/support                      /opt/atlassian/support
+VOLUME ${BITBUCKET_HOME}
+USER ${BITBUCKET_USER}
+ENV JAVA_HOME=/usr/lib/jvm/java-11
+ENV PATH=${PATH}:${BITBUCKET_INSTALL_DIR}/bin
+WORKDIR ${BITBUCKET_HOME}
+ENTRYPOINT [ "entrypoint.sh" ]
