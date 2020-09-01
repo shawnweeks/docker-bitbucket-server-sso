@@ -80,3 +80,5 @@ docker run --init -it --rm \
 | ATL_PROXY_PORT | The reverse proxy's port number | None |
 | CUSTOM_SSO_LOGIN_URL | Login URL for Custom SSO Support | None |
 | CROWD_SSO_ENABLED | Enable Crowd SSO Support | false |
+| JVM_MINIMUM_MEMORY | Set's Java XMS | None |
+| JVM_MAXIMUM_MEMORY | Set's Java XMX | None |
