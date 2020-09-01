@@ -5,7 +5,6 @@ import logging
 import jinja2 as j2
 import uuid
 import base64
-from jproperties import Properties
 
 logging.basicConfig(level=logging.DEBUG)
 

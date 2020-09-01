@@ -7,7 +7,7 @@ BITBUCKET_INSTALL_DIR = env['BITBUCKET_INSTALL_DIR']
 
 pf=f'{BITBUCKET_HOME}/shared/bitbucket.properties'
 set_prop("plugin.auth-crowd.sso.enabled", env.get("CROWD_SSO_ENABLED","false"), pf)
-set_prop("server.secured", env.get("ATL_TOMCAT_SECURE","false"), pf)
+set_prop("server.secure", env.get("ATL_TOMCAT_SECURE","false"), pf)
 set_prop("server.scheme", env.get("ATL_TOMCAT_SCHEME","http"), pf)
 set_prop("server.proxy-port", env.get("ATL_PROXY_PORT",""), pf)
 set_prop("server.proxy-name", env.get("ATL_PROXY_NAME",""), pf)
