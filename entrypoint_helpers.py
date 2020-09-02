@@ -1,12 +1,8 @@
 import sys
 import os
-import shutil
 import logging
 import jinja2 as j2
-import uuid
-import base64
-
-logging.basicConfig(level=logging.DEBUG)
+import re
 
 env = {k: v
     for k, v in os.environ.items()}
@@ -21,17 +17,28 @@ def gen_cfg(tmpl, target):
     with open(target, 'w') as fd:
         fd.write(cfg)
 
-def set_prop(key, val, target):
-    print(f"Setting {key}={val} in {target}")
-    matched_key = False
+def set_props(props, target):
     with open(target, 'r') as f:
         input = f.read()
-        with open(target, 'w') as output:        
-            for line in input.splitlines():
-                if key in line:
-                    matched_key = True
-                    output.write(f'{key}={val}\n')
+    tmpInput = input.splitlines()
+    output = []
+    for k, v in props.items():
+        print(f"Setting {k}={v} in {target}")
+        key_found = False
+        if output:
+            tmpInput = output
+            output = []
+        for line in tmpInput:
+            m = re.search(r'^\s*([^=\s]+)\s*=\s*([^=\s]+)?\s*$', line)
+            if m and m.group(1) == k:
+                key_found = True
+                if m.group(2) == v:
+                    output.append(line)
                 else:
-                    output.write(f'{line}\n')
-            if not matched_key:
-                output.write(f'{key}={val}\n')
+                    output.append(f'{k}={v}')
+            else:
+                output.append(line)
+        if not key_found:
+            output.append(f'{k}={v}')
+    with open(target,'w') as f:
+        f.write('\n'.join(output))
