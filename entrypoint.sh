@@ -9,23 +9,17 @@ umask 0027
 export JAVA_OPTS="${JAVA_OPTS}"
 export CATALINA_OPTS="${CATALINA_OPTS}"
 
-startup() {
-    echo Starting Bitbucket Server
-    if [[ ${BITBUCKET_SEARCH_ENABLED} = false ]]
-    then
-        ${BITBUCKET_INSTALL_DIR}/bin/start-bitbucket.sh --no-search
-    else
-        ${BITBUCKET_INSTALL_DIR}/bin/start-bitbucket.sh
-    fi
-    sleep 15
-    tail -n +1 --retry -F ${BITBUCKET_HOME}/log/*.log ${BITBUCKET_HOME}/log/**/*.log
-}
 
-shutdown() {
-    echo Stopping Bitbucket Server
-    ${BITBUCKET_INSTALL_DIR}/bin/stop-bitbucket.sh
-}
 
-trap "shutdown" INT
+
+if [[ ! -d ${BITBUCKET_HOME}/shared ]]
+then
+  mkdir ${BITBUCKET_HOME}/shared/
+  touch ${BITBUCKET_HOME}/shared/bitbucket.properties
+elif [[ ! -e ${BITBUCKET_HOME}/shared/bitbucket.properties ]]
+then
+    touch ${BITBUCKET_HOME}/shared/bitbucket.properties
+fi
+
 entrypoint.py
-startup
+${BITBUCKET_INSTALL_DIR}/bin/start-bitbucket.sh -fg --no-search

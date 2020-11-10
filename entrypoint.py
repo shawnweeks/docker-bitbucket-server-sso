@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/python2
 
 from entrypoint_helpers import env, gen_cfg, set_props
 
@@ -14,7 +14,7 @@ props = {
     "server.context-path":env.get("ATL_TOMCAT_CONTEXTPATH",""),
 }
 
-set_props(props,f'{BITBUCKET_HOME}/shared/bitbucket.properties')
+set_props(props,'{}/shared/bitbucket.properties'.format(BITBUCKET_HOME))
 
 if 'CROWD_SSO_ENABLED' in env and env['CROWD_SSO_ENABLED'] == 'true':
-    gen_cfg('login.soy.j2', f'{BITBUCKET_INSTALL_DIR}/app/static/bitbucket/internal/page/login/login.soy')    
+    gen_cfg('login.soy.j2', '{}/app/static/bitbucket/internal/page/login/login.soy'.format(BITBUCKET_INSTALL_DIR))    
