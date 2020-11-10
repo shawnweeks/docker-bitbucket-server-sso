@@ -7,13 +7,16 @@
 # Crowd         2004
 # Bamboo        2005
 ARG BASE_REGISTRY
-ARG BASE_IMAGE=redhat/ubi/ubi7
-ARG BASE_TAG=7.9
+ARG BASE_IMAGE=redhat/ubi/ubi8
+ARG BASE_TAG=8.3
 
 FROM ${BASE_REGISTRY}/${BASE_IMAGE}:${BASE_TAG} as build
 
 ARG BITBUCKET_VERSION
 ARG BITBUCKET_PACKAGE=atlassian-bitbucket-${BITBUCKET_VERSION}.tar.gz
+
+ARG GIT_VERSION
+ARG GIT_PACKAGE=git-${GIT_VERSION}.tar.gz
 
 COPY [ "${BITBUCKET_PACKAGE}", "/tmp/" ]
 
@@ -23,8 +26,8 @@ RUN mkdir -p /tmp/atl_pkg && \
 
 ###############################################################################
 ARG BASE_REGISTRY
-ARG BASE_IMAGE=redhat/ubi/ubi7
-ARG BASE_TAG=7.9
+ARG BASE_IMAGE=redhat/ubi/ubi8
+ARG BASE_TAG=8.3
 
 FROM ${BASE_REGISTRY}/${BASE_IMAGE}:${BASE_TAG}
 
@@ -36,7 +39,7 @@ ENV BITBUCKET_GID 2003
 ENV BITBUCKET_HOME /var/atlassian/application-data/bitbucket
 ENV BITBUCKET_INSTALL_DIR /opt/atlassian/bitbucket
 
-RUN yum install -y java-11-openjdk-devel procps git python2 python2-jinja2 && \
+RUN yum install -y java-11-openjdk-devel procps git python2 python2-jinja2  && \
     yum clean all && \    
     mkdir -p ${BITBUCKET_HOME} && \
     mkdir -p ${BITBUCKET_INSTALL_DIR} && \
