@@ -5,11 +5,13 @@ export BITBUCKET_VERSION=7.5.1
 
 ### Download Files
 ```shell
+export BITBUCKET_VERSION=7.5.1
 wget https://product-downloads.atlassian.com/software/stash/downloads/atlassian-bitbucket-${BITBUCKET_VERSION}.tar.gz
 ```
 
 ### Build Command
 ```shell
+export BITBUCKET_VERSION=7.5.1
 docker build \
     -t ${REGISTRY}/atlassian-suite/bitbucket-server-sso:${BITBUCKET_VERSION} \
     --build-arg BASE_REGISTRY=${REGISTRY} \
@@ -24,6 +26,7 @@ docker push $REGISTRY/atlassian-suite/bitbucket-server-sso
 
 ### Simple Run Command
 ```shell
+export BITBUCKET_VERSION=7.5.1
 docker run --init -it --rm \
     --name bitbucket  \
     -v bitbucket-data:/var/atlassian/application-data/bitbucket \

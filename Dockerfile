@@ -41,12 +41,11 @@ ENV BITBUCKET_INSTALL_DIR /opt/atlassian/bitbucket
 
 RUN yum install -y java-11-openjdk-devel procps git python2 python2-jinja2  && \
     yum clean all && \    
-    mkdir -p ${BITBUCKET_HOME} && \
+    mkdir -p ${BITBUCKET_HOME}/shared && \
     mkdir -p ${BITBUCKET_INSTALL_DIR} && \
     groupadd -r -g ${BITBUCKET_GID} ${BITBUCKET_GROUP} && \
     useradd -r -u ${BITBUCKET_UID} -g ${BITBUCKET_GROUP} -M -d ${BITBUCKET_HOME} ${BITBUCKET_USER} && \
-    chown ${BITBUCKET_USER}:${BITBUCKET_GROUP} ${BITBUCKET_HOME} && \
-    chown ${BITBUCKET_USER}:${BITBUCKET_GROUP} ${BITBUCKET_INSTALL_DIR}
+    chown ${BITBUCKET_USER}:${BITBUCKET_GROUP} ${BITBUCKET_HOME} -R
 
 COPY [ "templates/*.j2", "/opt/jinja-templates/" ]
 COPY --from=build --chown=${BITBUCKET_USER}:${BITBUCKET_GROUP} [ "/tmp/atl_pkg", "${BITBUCKET_INSTALL_DIR}/" ]
