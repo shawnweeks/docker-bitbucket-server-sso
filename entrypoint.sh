@@ -12,8 +12,13 @@ export CATALINA_OPTS="${CATALINA_OPTS}"
 shutdownCleanup() {
     if [[ -f ${HOME}/.lock ]]
     then
-        echo "Cleaning Up Bitbucket Locks"
+        echo "Cleaning Up Bitbucket Lock"
         rm ${HOME}/.lock
+    fi
+    if [[ -f ${HOME}/shared/.lock ]]
+    then
+        echo "Cleaning Up Bitbucket Shared Lock"
+        rm ${HOME}/shared/.lock
     fi
 }
 
