@@ -8,7 +8,7 @@ BITBUCKET_INSTALL_DIR = env['BITBUCKET_INSTALL_DIR']
 props = {
     "plugin.auth-crowd.sso.enabled":env.get("ATL_CROWD_SSO_ENABLED","false"),
     "server.port":env.get("ATL_TOMCAT_PORT","7990"),
-    "server.ssl":env.get("ATL_TOMCAT_SSL_ENABLED","false"),
+    "server.ssl.enabled":env.get("ATL_TOMCAT_SSL_ENABLED","false"),
     "server.ssl.key-alias":env.get("ATL_TOMCAT_KEY_ALIAS","tomcat"),
     "server.ssl.key-store":env.get("ATL_TOMCAT_KEYSTORE_FILE",""),
     "server.ssl.key-store-password":env.get("ATL_TOMCAT_KEYSTORE_PASSWORD",""),
