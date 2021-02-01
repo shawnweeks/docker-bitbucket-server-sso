@@ -13,7 +13,7 @@
  */
 {template .login}{% endraw %}
   {literal}<script type="text/javascript">
-    var ssoUrl = '{{ CUSTOM_SSO_LOGIN_URL | default('') | replace("'", "\\'") }}';
+    var ssoUrl = '{{ ATL_SSO_LOGIN_URL | default('') | replace("'", "\\'") }}';
     var contextPath = '{{ ATL_TOMCAT_CONTEXTPATH | default('') | replace("'", "\\'") }}';
 
     var url = new URL(window.location.href);

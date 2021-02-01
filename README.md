@@ -69,17 +69,23 @@ docker run --init -it --rm \
 ### Environment Variables
 | Variable Name | Description | Default Value |
 | --- | --- | --- |
-| BITBUCKET_SEARCH_ENABLED | Should Bitbucket start an internal ElasticSearch Instance | true |
 | ATL_TOMCAT_PORT | The port bitbucket listens on, this may need to be changed depending on your environment. | 8085 |
 | ATL_TOMCAT_SCHEME | The protocol via which bitbucket is accessed | http |
 | ATL_TOMCAT_SECURE | Set to true if `ATL_TOMCAT_SCHEME` is 'https' | false |
 | ATL_TOMCAT_CONTEXTPATH | The context path the application is served over | None |
-| ATL_PROXY_NAME | The reverse proxys full URL for bitbucket | None |
-| ATL_PROXY_PORT | The reverse proxy's port number | None |
-| CUSTOM_SSO_LOGIN_URL | Login URL for Custom SSO Support | None |
-| CROWD_SSO_ENABLED | Enable Crowd SSO Support | false |
-| JVM_MINIMUM_MEMORY | Set's Java XMS | None |
-| JVM_MAXIMUM_MEMORY | Set's Java XMX | None |
+| ATL_TOMCAT_PROXY_NAME | The reverse proxys full URL for bitbucket | None |
+| ATL_TOMCAT_PROXY_PORT | The reverse proxy's port number | None |
+| ATL_TOMCAT_SSL_ENABLED | Enable Tomcat SSL Support | None |
+| ATL_TOMCAT_SSL_ENABLED_PROTOCOLS | Allowed SSL Protocols | TLSv1.2,TLSv1.3 |
+| ATL_TOMCAT_KEY_ALIAS | Tomcat SSL Key Alias | None |
+| ATL_TOMCAT_KEYSTORE_FILE | Tomcat SSL Keystore File | None |
+| ATL_TOMCAT_KEYSTORE_PASS | Tomcat SSL Keystore Password | None |
+| ATL_TOMCAT_KEYSTORE_TYPE | Tomcat SSL Keystore Type | JKS |
+| ATL_SSO_LOGIN_URL | Login URL for Custom SSO Support | None |
+| ATL_CROWD_SSO_ENABLED | Enable Crowd SSO Support | false |
+| ATL_JAVA_ARGS | Support recomended Java Arguments | None |
+| ATL_MIN_MEMORY | Set's Java XMS | None |
+| ATL_MAX_MEMORY | Set's Java XMX | None |
 
 ### Additional
 #### Auto-login

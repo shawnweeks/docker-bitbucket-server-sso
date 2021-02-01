@@ -3,25 +3,23 @@
 set -e
 umask 0027
 
-: ${JAVA_OPTS:=}
-: ${CATALINA_OPTS:=}
-
-export JAVA_OPTS="${JAVA_OPTS}"
-export CATALINA_OPTS="${CATALINA_OPTS}"
-
-shutdownCleanup() {
-    if [[ -f ${HOME}/.lock ]]
-    then
-        echo "Cleaning Up Bitbucket Lock"
-        rm ${HOME}/.lock
-    fi
-    if [[ -f ${HOME}/shared/.lock ]]
-    then
-        echo "Cleaning Up Bitbucket Shared Lock"
-        rm ${HOME}/shared/.lock
-    fi
-}
+export JVM_SUPPORT_RECOMMENDED_ARGS=${ATL_JAVA_ARGS}
+export JVM_MINIMUM_MEMORY=${ATL_MIN_MEMORY}
+export JVM_MAXIMUM_MEMORY=${ATL_MAX_MEMORY}
 
 entrypoint.py
-trap "shutdownCleanup" INT
-${BITBUCKET_INSTALL_DIR}/bin/start-bitbucket.sh -fg
+
+unset "${!ATL_@}"
+
+set +e
+flock -x -w 30 ${HOME}/.flock ${BITBUCKET_INSTALL_DIR}/bin/start-bitbucket.sh -fg &
+BITBUCKET_PID="$!"
+
+echo "Bitbucket Started with PID ${BITBUCKET_PID}"
+wait ${BITBUCKET_PID}
+
+if [[ $? -eq 1 ]]
+then
+    echo "Bitbucket Failed to Aquire Lock! Exiting"
+    exit 1
+fi
