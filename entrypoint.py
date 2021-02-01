@@ -12,6 +12,7 @@ props = {
     "server.ssl.key-alias":env.get("ATL_TOMCAT_KEY_ALIAS","tomcat"),
     "server.ssl.key-store":env.get("ATL_TOMCAT_KEYSTORE_FILE",""),
     "server.ssl.key-store-password":env.get("ATL_TOMCAT_KEYSTORE_PASSWORD",""),
+    "server.ssl.key-password":env.get("ATL_TOMCAT_KEYSTORE_PASSWORD",""),
     "server.ssl.key-store-type":env.get("ATL_TOMCAT_KEYSTORE_TYPE","JKS"),
     "server.secure":env.get("ATL_TOMCAT_SECURE","false"),
     "server.ssl.protocol":env.get("ATL_TOMCAT_SSL_ENABLED_PROTOCOLS","TLSv1.2"),
