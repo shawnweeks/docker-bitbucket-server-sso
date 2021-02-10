@@ -20,6 +20,15 @@ props = {
     "server.proxy-port":env.get("ATL_TOMCAT_PROXY_PORT",""),
     "server.proxy-name":env.get("ATL_TOMCAT_PROXY_NAME",""),
     "server.context-path":env.get("ATL_TOMCAT_CONTEXTPATH",""),
+    "server.tomcat.max-connections":env.get("ATL_TOMCAT_MAX_CONNECTIONS","8192"),
+    "server.tomcat.remote_ip_header":"x-forwarded-for",
+    "server.tomcat.protocol_header":"x-forwarded-proto",
+    "server.tomcat.accesslog.enabled":"true",
+    "server.tomcat.accesslog.directory":"{}/log".format(BITBUCKET_HOME),
+    "server.tomcat.accesslog.prefix":"access",
+    "server.tomcat.accesslog.suffix":".log",
+    "server.tomcat.accesslog.rename-on-rotate":"true",
+    "server.tomcat.accesslog.request-attributes-enabled":"true"
 }
 
 set_props(props,'{}/shared/bitbucket.properties'.format(BITBUCKET_HOME))
