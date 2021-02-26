@@ -41,7 +41,7 @@ ENV BITBUCKET_INSTALL_DIR /opt/atlassian/bitbucket
 
 RUN yum install -y java-11-openjdk-devel procps git && \
     yum clean all && \    
-    mkdir -p ${BITBUCKET_HOME}/shared && \
+    mkdir -p ${BITBUCKET_HOME}/{shared,logs} && \
     mkdir -p ${BITBUCKET_INSTALL_DIR} && \
     groupadd -r -g ${BITBUCKET_GID} ${BITBUCKET_GROUP} && \
     useradd -r -u ${BITBUCKET_UID} -g ${BITBUCKET_GROUP} -M -d ${BITBUCKET_HOME} ${BITBUCKET_USER} && \
