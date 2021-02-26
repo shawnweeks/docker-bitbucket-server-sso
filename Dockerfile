@@ -39,7 +39,7 @@ ENV BITBUCKET_GID 2003
 ENV BITBUCKET_HOME /var/atlassian/application-data/bitbucket
 ENV BITBUCKET_INSTALL_DIR /opt/atlassian/bitbucket
 
-RUN yum install -y java-11-openjdk-devel procps git python2 python2-jinja2  && \
+RUN yum install -y java-11-openjdk-devel procps git && \
     yum clean all && \    
     mkdir -p ${BITBUCKET_HOME}/shared && \
     mkdir -p ${BITBUCKET_INSTALL_DIR} && \

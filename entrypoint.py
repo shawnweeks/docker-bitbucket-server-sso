@@ -1,4 +1,4 @@
-#!/usr/bin/python2
+#!/usr/bin/python3
 
 from entrypoint_helpers import env, gen_cfg, set_props
 
@@ -24,10 +24,10 @@ props = {
     "server.tomcat.remote_ip_header":"x-forwarded-for",
     "server.tomcat.protocol_header":"x-forwarded-proto",
     "server.tomcat.accesslog.enabled":"true",
+    "server.tomcat.accesslog.rename-on-rotate":"false",
     "server.tomcat.accesslog.directory":"{}/log".format(BITBUCKET_HOME),
     "server.tomcat.accesslog.prefix":"access",
     "server.tomcat.accesslog.suffix":".log",
-    "server.tomcat.accesslog.rename-on-rotate":"true",
     "server.tomcat.accesslog.request-attributes-enabled":"true"
 }
 

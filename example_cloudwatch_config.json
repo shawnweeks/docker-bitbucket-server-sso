@@ -1,0 +1,55 @@
+{
+  "agent": {
+    "logfile": "/var/log/amazon-cloudwatch-agent.log"
+  },
+  "logs": {
+    "logs_collected": {
+      "files": {
+        "collect_list": [
+          {
+            "file_path": "/var/log/atlassian-bitbucket.log*",
+            "log_group_name": "/mgmt/atlassian/bitbucket",
+            "log_stream_name": "atlassian-bitbucket.log",
+            "auto_removal": true
+          },
+          {
+            "file_path": "/var/log/atlassian-bitbucket-access.log*",
+            "log_group_name": "/mgmt/atlassian/bitbucket",
+            "log_stream_name": "atlassian-bitbucket-access.log",
+            "auto_removal": true
+          },
+          {
+            "file_path": "/var/log/atlassian-bitbucket-alerts.log*",
+            "log_group_name": "/mgmt/atlassian/bitbucket",
+            "log_stream_name": "atlassian-bitbucket-alerts.log",
+            "auto_removal": true
+          },          
+          {
+            "file_path": "/var/log/atlassian-bitbucket-mail.log*",
+            "log_group_name": "/mgmt/atlassian/bitbucket",
+            "log_stream_name": "atlassian-bitbucket-mail.log",
+            "auto_removal": true
+          },
+          {
+            "file_path": "/var/log/atlassian-bitbucket-profiler.log*",
+            "log_group_name": "/mgmt/atlassian/bitbucket",
+            "log_stream_name": "atlassian-bitbucket-profiler.log",
+            "auto_removal": true
+          },      
+          {
+            "file_path": "/var/log/search/bitbucket_search.log*",
+            "log_group_name": "/mgmt/atlassian/bitbucket",
+            "log_stream_name": "bitbucket_search.log",
+            "auto_removal": true
+          },                
+          {
+            "file_path": "/var/log/access.**.log",
+            "log_group_name": "/mgmt/atlassian/bitbucket",
+            "log_stream_name": "access.log",
+            "auto_removal": true
+          }
+        ]
+      }
+    }
+  }
+}
