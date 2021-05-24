@@ -17,7 +17,7 @@
     var contextPath = '{{ ATL_TOMCAT_CONTEXTPATH | default('') | replace("'", "\\'") }}';
 
     var url = new URL(window.location.href);
-    var osDestination = url.searchParams.get("nextUrl");
+    var osDestination = url.searchParams.get("next");
 	var autoLogin = url.searchParams.get("auto_login");
     if (autoLogin === null || autoLogin === undefined) {
       autoLogin = "true";
